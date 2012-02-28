@@ -66,21 +66,17 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 				orientation : "vertical",
 				value : 8599,
 				min : 100,
-				max : 9999,
+				max : 7999,
 				slide : $.proxy(function(event, ui) {
-					this.camera.position.z = 10099 - ui.value;
+					this.camera.position.z = 9099 - ui.value;
 				},this)
 			});
-			$('#navigator').on("click", "div", $.proxy(this.navigation, this));
+			//$('#navigator').on("click", "div", $.proxy(this.navigation, this));
 			$('#navigator').on('mousemove', function(){$('#navigator').css('opacity', '0.8');});
 			$('#navigator').on('mouseout', function(){$('#navigator').css('opacity', '0.5');});
 				
 			this.container = document.createElement('div');
-			//this.el.append($("#navigator"));
 			$(this.el).append(this.container);
-			var info = document.createElement('div');
-			this.el.appendChild(info);
-			//$(this.container).append($("#osx-modal-data-edit"));
 			this.scene = new THREE.Scene();
 			this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
 			this.camera.position.y = 150;
@@ -92,11 +88,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			this.renderer = new THREE.CanvasRenderer();
 			this.renderer.setSize(window.innerWidth, window.innerHeight);
 			this.container.appendChild(this.renderer.domElement);
-			this.stats = new Stats();
-			this.stats.domElement.style.position = 'absolute';
-			this.stats.domElement.style.top = '0px';
-			this.stats.domElement.style.right = '0px';
-			this.container.appendChild(this.stats.domElement);
+			
 		},
 		
 		create_node: function (data){
@@ -592,10 +584,10 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 		},
         redrawTree: function(id){
             ///////////////////////////////////////    CHANGE VIEW     ////////////////////////////////////////////////
-                    this.data2.id = id;
+                    //this.data2.id = id;
                     
-                    this.objects = [];
-                    this.data2.tree = [];
+                    //this.objects = [];
+                    //this.data2.tree = [];
                     this.chWidth = {};
                     this.chLShift = {};
                     this.chRShift = {};
@@ -609,7 +601,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
         			this.collection.fetch({
                         //url: '/data2.json',
         				success: $.proxy(function(collection) {
-        					var arr = collection.toJSON();
+        					var arr = collection.toJSON(); console.log(arr);
         					for(key in arr){       							
         						this.data1[arr[key].id] = arr[key];
         						if(this.data1[arr[key].id].f_id == "0") {
@@ -621,13 +613,15 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
         						if(this.data1[arr[key].id].spouse_id == "0") {
         							this.data1[arr[key].id].spouse_id = "";
         						}
-        					}
-        					this.data2.tree = this.data1;
-        					this.createTree();
+        					}console.log(this.data1);
+        					this.data2.tree = this.data1;console.log(this.data2);
+        					this.scene = new THREE.Scene();
+        					this.scene.add(this.camera);
+        					this.createTree();console.log("redraw");
         				},this)});
         			
-        			this.scene = new THREE.Scene();
-        			this.scene.add(this.camera);
+        			//this.scene = new THREE.Scene();
+        			//this.scene.add(this.camera);
         			///////////////////////////////////////////////////////////////////////////////////////////////////
         },
 		onDocumentMouseDown: function(event) {
@@ -868,8 +862,8 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 					this.camera.position.z -= event.originalEvent.wheelDeltaY;
 				if(this.camera.position.z < 100)
 					this.camera.position.z = 101;
-				if(this.camera.position.z > 10000)
-					this.camera.position.z = 9999;
+				if(this.camera.position.z > 9000)
+					this.camera.position.z = 8999;
 				this.camera.updateMatrix();
 		},
 		
@@ -894,7 +888,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 							this.camera.position.z -= 10;
 						break;
 					case "minus":
-						if(this.camera.position.z < 9999)
+						if(this.camera.position.z < 8999)
 							this.camera.position.z += 10;
 						break;
 				};						
@@ -902,11 +896,10 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 		animate: function() {
 				requestAnimationFrame($.proxy(this.animate, this));
 				this.render();
-				this.stats.update();
 				
 		},
 		render: function(){
-			$("#slider").slider("value", 10099 - this.camera.position.z);
+			$("#slider").slider("value", 9099 - this.camera.position.z);
 			this.renderer.render(this.scene, this.camera);
 			
 		},
@@ -1024,6 +1017,9 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			
 		},
 		addNode : function(response) {
+			console.log(response);
+			if(response.status == 1)
+			this.redrawTree();
 			showPopup('show-popup', 'green', 'Saved', 2000);
 		},
 		saveNode : function(options) {
