@@ -1055,7 +1055,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			
 		},
 		addNode : function(response) {
-			showPopup('show-popup', 'green', 'Saved', 2000);
+			//showPopup('show-popup', 'green', 'Saved', 2000);
 		},
 		saveNode : function(options) {
 			
@@ -1066,7 +1066,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 				success : $.proxy(function(response) {
 					console.log(response);
 					//update photo
-					showPopup('show-popup', 'green', 'Saved', 2000);
+					//showPopup('show-popup', 'green', 'Saved', 2000);
 				}, this),
 				error : function(error) {
 					console.log(error.responseText);
