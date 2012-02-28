@@ -583,9 +583,9 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 		},
         redrawTree: function(id){
             ///////////////////////////////////////    CHANGE VIEW     ////////////////////////////////////////////////
-                    if(id)
-                    this.data2.id = id;
-                    
+                    if(id){
+                    	this.data2.id = id;
+                    };
                     this.objects = [];
                     this.data2.tree = [];
                     this.chWidth = {};
