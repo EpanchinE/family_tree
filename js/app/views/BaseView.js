@@ -34,7 +34,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			this.collection.fetch({
                 //url: '/data2.json',
 				success: $.proxy(function(collection) {
-					var arr = collection.toJSON();console.log(arr);
+					var arr = collection.toJSON();
 					for(key in arr){       							
 						this.data1[arr[key].id] = arr[key];
 						if(this.data1[arr[key].id].f_id == "0") {
@@ -51,7 +51,6 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 						}
 					}
 					this.data2.tree = this.data1;
-					console.log(this.data2.tree);
 					this.createTree();
 				},this)});
 			
@@ -87,7 +86,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 		},
 		
 		create_node: function (data){
-			var cube = new THREE.Object3D();console.log(data);
+			var cube = new THREE.Object3D();
 			// TODO coords
 			if(data.photo_url == "" || data.photo_url == null){data.photo_url = "no_avatar.jpg"};
 			var photo = this.texture('assets/images/uploaded/avatars/'+data.photo_url, 260, 260);
@@ -584,10 +583,11 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 		},
         redrawTree: function(id){
             ///////////////////////////////////////    CHANGE VIEW     ////////////////////////////////////////////////
-                    //this.data2.id = id;
+                    if(id)
+                    this.data2.id = id;
                     
-                    //this.objects = [];
-                    //this.data2.tree = [];
+                    this.objects = [];
+                    this.data2.tree = [];
                     this.chWidth = {};
                     this.chLShift = {};
                     this.chRShift = {};
@@ -601,7 +601,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
         			this.collection.fetch({
                         //url: '/data2.json',
         				success: $.proxy(function(collection) {
-        					var arr = collection.toJSON(); console.log(arr);
+        					var arr = collection.toJSON();
         					for(key in arr){       							
         						this.data1[arr[key].id] = arr[key];
         						if(this.data1[arr[key].id].f_id == "0") {
@@ -613,11 +613,11 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
         						if(this.data1[arr[key].id].spouse_id == "0") {
         							this.data1[arr[key].id].spouse_id = "";
         						}
-        					}console.log(this.data1);
-        					this.data2.tree = this.data1;console.log(this.data2);
+        					}
+        					this.data2.tree = this.data1;
         					this.scene = new THREE.Scene();
         					this.scene.add(this.camera);
-        					this.createTree();console.log("redraw");
+        					this.createTree();
         				},this)});
         			
         			//this.scene = new THREE.Scene();
@@ -942,7 +942,6 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 				scale = w / 300;
 			}
 
-			console.log(this.TempObj);
 			var data = {
 				'id': $('#user_id').val(),
 				'f_name' : $('#f_name').val(),
@@ -969,8 +968,6 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			if(!data.ch_ids){
 					data.ch_ids = [];
 					}
-			console.log(data.sex);
-			console.log(data);
 			if(this.TempObj.action == "add_parent"){
 				data.action = this.TempObj.action;
 				data.send_node_id = this.TempObj.node.info.id;
@@ -1060,8 +1057,8 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 				dataType : 'json',
 				data : options.data,
 				success : $.proxy(function(response) {
-					console.log(response);
-					//update photo
+					
+					this.redrawTree();
 					showPopup('show-popup', 'green', 'Saved', 2000);
 				}, this),
 				error : function(error) {
