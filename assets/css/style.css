@@ -1,5 +1,6 @@
-a {	text-decoration: none; color: #525285;	}
-a:visited {	color: #525285; }
+a {	text-decoration: none; color: #303030; }
+a:visited {	text-decoration: none; color: #303030; }
+
 #navigator {
 	position: absolute;
 	width: 100px;
@@ -105,7 +106,7 @@ a:visited {	color: #525285; }
 		color-stop(0, rgb(97,124,131)),
 		color-stop(0.48, rgb(182,207,212)),
 		color-stop(1, rgb(97,124,131))
-	);
+		);
 	margin: 0;
 }
 #loginform {
@@ -122,7 +123,7 @@ a:visited {	color: #525285; }
 
 	margin: 5px 0px 5px 0px;
 	font-size: 12px; font-family: Tahoma; color: #fff; font-weight: bold;
-	
+
 	box-shadow: 0px 1px 3px #000;
 	-o-box-shadow: 0px 1px 3px #000;
 	-moz-box-shadow: 0px 1px 3px #000;
@@ -145,14 +146,15 @@ a:visited {	color: #525285; }
 	color: #333;
 	height: 20px;
 }
-#loginform input:hover, #osx-modal-content-edit input:hover, #panel input {
-	background-color: #ccc;
-	background: -o-linear-gradient(bottom, #ccc, #ddd);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ddd), color-stop(1, #ccc));
-	background: -moz-linear-gradient(bottom, #ccc, #ddd);
-	border: 1px solid #ddd;
+#loginform input:hover, #osx-modal-content-edit input:hover, #panel input:hover {
+	background-color: #fff;
+	background: -o-linear-gradient(bottom, #fff, #eee);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #eee), color-stop(1, #fff));
+	background: -moz-linear-gradient(bottom, #fff, #eee);
+	/*border: 1px solid #ddd;*/
+	cursor: pointer;
 }
-#loginform input:active, #osx-modal-content-edit input:active, #panel input {
+#loginform input:active, #osx-modal-content-edit input:active, #panel input:active {
 	box-shadow: 0px 0px 3px #000;
 	-o-box-shadow: 0px 0px 3px #000;
 	-moz-box-shadow: 0px 0px 3px #000;
@@ -174,9 +176,9 @@ a:visited {	color: #525285; }
 
 }
 #panel {
-	height: 300px;	
-	border:4px solid #FF9;
-	border-top:0px;
+	height: 300px;
+	border:3px solid #FF9;
+	/*border-top:0px;*/
     border-radius: 0 0 30px 30px;
     -webkit-border-radius: 0 0 30px 30px; /* Safari, Chrome */
     -moz-border-radius: 0 0 30px 30px; /* Firefox */
@@ -184,7 +186,7 @@ a:visited {	color: #525285; }
     -webkit-box-shadow: 0 0 30px 8px #1A3457; /* Safari, Chrome */
     -moz-box-shadow: 0 0 30px 8px #1A3457; /* Firefox */
     background: #ffffec;
-	background: -webkit-linear-gradient(top, #ffffec, #bbbbee);
+	background: -webkit-linear-gradient(top, #ffffec, #CEDEF4);
 }
 #panel table{
 	font-size: 16px;
@@ -198,16 +200,16 @@ input[type=text],input[type=password],input[type=date] {
 	float: left;
 	margin-left: 10px;
 	border-radius: 5px;
-	
+
 }
 .tab {
 	position: relative;
 	background: #dedede;
 	display: block;
-	height: 38px;
+	height: 40px;
 	line-height: 40px;
 	text-align: center;
-	width: 290px;
+	width: 292px;
 	float: right;
 	font-weight: bold;
 	font-size: 22px;
@@ -215,21 +217,29 @@ input[type=text],input[type=password],input[type=date] {
 	-webkit-border-top-right-radius: 10px;
 	-moz-border-radius: 10px 10px 0px 0px;
 	border-radius: 10px 10px 0 0;
-	
-	border:3px solid #FF9;
-	border-bottom:0px;
+
     border-radius: 15px 15px 0 0;
     -webkit-border-radius: 15px 15px 0 0; /* Safari, Chrome */
     -moz-border-radius: 15px 15px 0 0; /* Firefox */
 	background: #dfdfc9;
-	opacity: 0.8;
+	opacity: 0.5;
 
+	-moz-user-select: -moz-none;
+	-o-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+
+    font-size: 23px;
+    text-shadow: 0px 1px 2px #666;
 }
-#registrationtab {
+#registertab {
 	float: right;
+	color: #606060;
 }
 #logintab {
 	float: left;
+	color: #606060;
 }
 p a {
 	color: #000;
@@ -243,15 +253,27 @@ p a {
 .select {
 	background-color: #ffffec;
 	opacity: 1;
+	border:3px solid #FF9;
+	border-bottom:0px;
 }
 #loginbox {
 	min-height: 200px;
 	padding: 10px;
+	-moz-user-select: -moz-none;
+	-o-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
 }
 #signupbox {
 	min-height: 200px;
 	padding: 10px;
 	display: none;
+	-moz-user-select: -moz-none;
+	-o-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
 }
 /*****Pop-ups******/
 table.pop_up {
@@ -441,7 +463,7 @@ table.pop_up {
     color: #fef4e9;
     border: solid 1px #da7c0c;
 	opacity: 0.7;
-	
+
 	background-image: linear-gradient(bottom, rgb(255,106,0) 0%, rgb(255,0,0) 50%, rgb(255,113,5) 100%);
 	background-image: -o-linear-gradient(bottom, rgb(255,106,0) 0%, rgb(255,0,0) 50%, rgb(255,113,5) 100%);
 	background-image: -moz-linear-gradient(bottom, rgb(255,106,0) 0%, rgb(255,0,0) 50%, rgb(255,113,5) 100%);
@@ -455,12 +477,13 @@ table.pop_up {
 		color-stop(0, rgb(255,106,0)),
 		color-stop(0.5, rgb(255,0,0)),
 		color-stop(1, rgb(255,113,5))
-	);
+		);
 
 }
 #logout_btn:hover {
     text-decoration: none;
 	opacity: 1;
+	margin-top: 2px;
 }
 #logout_btn:active {
     position: relative;
