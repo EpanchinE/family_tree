@@ -1045,10 +1045,9 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			
 		},
 		addNode : function(response) {
-			console.log(response);
-			if(response.status == 1)
 			this.redrawTree();
 			showPopup('show-popup', 'green', 'Saved', 2000);
+
 		},
 		saveNode : function(options) {
 			
@@ -1057,9 +1056,9 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 				dataType : 'json',
 				data : options.data,
 				success : $.proxy(function(response) {
-					
 					this.redrawTree();
 					showPopup('show-popup', 'green', 'Saved', 2000);
+
 				}, this),
 				error : function(error) {
 					console.log(error.responseText);
