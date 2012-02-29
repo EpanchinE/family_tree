@@ -65,7 +65,7 @@ var OSX = {
 							$('#f_name').val(user_data.info.f_name);
 							$('#l_name').val(user_data.info.l_name);
 							$('#b_date').val(user_data.info.b_date);
-							$('#d_date').val(user_data.info.b_date);
+							$('#d_date').val(user_data.info.d_date);
 							$('#about').html(user_data.info.comment);
 							
 							if(user_data.info.sex == 'm') 
@@ -94,6 +94,7 @@ var OSX = {
 						}
 						else
 						{
+							$('#m_radio').attr('checked', true);
 							$('#text_image').attr('style','display: none');
 							$('#data_table').attr('style','height: 495px;');
 							$('#photo').attr('src','assets/images/uploaded/avatars/no_avatar.jpg');
