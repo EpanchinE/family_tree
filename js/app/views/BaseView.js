@@ -184,8 +184,10 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
                         }
                     }
                     if (f_node) this.create_relation(nodex,f_node,"father","parent",f_id,i);
-                    if (data[f_id].ch_ids.length == 1 || i > 2) f_node.position.set(nodex.position.x - (Math.pow((4 - i), 0.5)) * this.nodeWidth, (i - 1) * (-this.nodeHeight - 200), 0);
-                    
+                    if (data[f_id].ch_ids.length == 1 || i > 2) {
+			f_node.position.set(nodex.position.x - (Math.pow((4 - i), 0.5)) * this.nodeWidth, (i - 1) * (-this.nodeHeight - 200), 0);
+			this.width_spouse_for_f = Math.abs(f_node.position.x) + 200;
+		    }
                     if (data[f_id].ch_ids.length > 1 && i < 3){
                         if (data[id].sex=="f"){
                             f_node.position.set(nodex.position.x, (i - 1) * (-this.nodeHeight - 200), 0);
@@ -215,8 +217,11 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
                         }
                     }
 					if (m_node) this.create_relation(nodex,m_node,"mother","parent",m_id,i);
-                    if (data[m_id].ch_ids.length == 1 || i > 2) m_node.position.set(nodex.position.x + (Math.pow((4 - i), 0.5)) * this.nodeWidth, (i - 1) * (-this.nodeHeight - 200), 0);
-					if (data[m_id].ch_ids.length > 1 && i < 3){
+                    if (data[m_id].ch_ids.length == 1 || i > 2){
+						m_node.position.set(nodex.position.x + (Math.pow((4 - i), 0.5)) * this.nodeWidth, (i - 1) * (-this.nodeHeight - 200), 0);
+						this.width_spouse_for_m = Math.abs(m_node.position.x) + 200;
+					}
+			if (data[m_id].ch_ids.length > 1 && i < 3){
                         if (data[id].sex=="m"){
                             m_node.position.set(nodex.position.x, (i - 1) * (-this.nodeHeight - 200), 0);
                         }
