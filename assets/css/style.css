@@ -1,6 +1,7 @@
 a {	text-decoration: none; color: #303030; }
 a:visited {	text-decoration: none; color: #303030; }
 
+/* navigator */
 #navigator {
 	position: absolute;
 	width: 100px;
@@ -92,8 +93,10 @@ a:visited {	text-decoration: none; color: #303030; }
 	left: 30px;
 	top: 370px;
 }
+
+/* body, login, register */
+
 .body {
-	/*background-image: url(/trash/back_11111.jpg);*/
 	background-image: linear-gradient(bottom, rgb(97,124,131) 0%, rgb(182,207,212) 48%, rgb(97,124,131) 100%);
 	background-image: -o-linear-gradient(bottom, rgb(97,124,131) 0%, rgb(182,207,212) 48%, rgb(97,124,131) 100%);
 	background-image: -moz-linear-gradient(bottom, rgb(97,124,131) 0%, rgb(182,207,212) 48%, rgb(97,124,131) 100%);
@@ -118,7 +121,6 @@ a:visited {	text-decoration: none; color: #303030; }
 	background: rgba(245,255,250, 0.6);
 	border-radius: 10px;
 }
-
 #loginform input, #osx-modal-content-edit input, #panel input {
 
 	margin: 5px 0px 5px 0px;
@@ -151,7 +153,6 @@ a:visited {	text-decoration: none; color: #303030; }
 	background: -o-linear-gradient(bottom, #fff, #eee);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #eee), color-stop(1, #fff));
 	background: -moz-linear-gradient(bottom, #fff, #eee);
-	/*border: 1px solid #ddd;*/
 	cursor: pointer;
 }
 #loginform input:active, #osx-modal-content-edit input:active, #panel input:active {
@@ -178,7 +179,6 @@ a:visited {	text-decoration: none; color: #303030; }
 #panel {
 	height: 300px;
 	border:3px solid #FF9;
-	/*border-top:0px;*/
     border-radius: 0 0 30px 30px;
     -webkit-border-radius: 0 0 30px 30px; /* Safari, Chrome */
     -moz-border-radius: 0 0 30px 30px; /* Firefox */
@@ -200,7 +200,6 @@ input[type=text],input[type=password],input[type=date] {
 	float: left;
 	margin-left: 10px;
 	border-radius: 5px;
-
 }
 .tab {
 	position: relative;
@@ -275,119 +274,6 @@ p a {
 	-webkit-user-select: none;
 	user-select: none;
 }
-/*****Pop-ups******/
-table.pop_up {
-	margin: 5px 0 0 5px;
-}
-/**/
-.bl {
-	background: #ff793f url(notifications/delete_categoriesLb.gif) 0 100% no-repeat;
-	margin: 5px 0px 0px 400px;
-	width: 40%
-}
-.br {
-	background: url(notifications/delete_categoriesRb.gif) 100% 100 % no-repeat
-}
-.tl {
-	background: url(notifications/delete_categori.gif) 0 0 no-repeat
-}
-.tr {
-	background: url(notifications/delete_categoriesR.gif) 100% 0 no-repeat;
-	padding: 5px 5px 5px 25px;
-}
-.bl_det {
-	background: #b0d3ef url(notifications/bl_detals.gif) 0 100% no-repeat;
-	margin: 5px 0px 0px 660px;
-	width: 15%
-}
-.br_det {
-	background: url(notifications/br_detals.gif) 100% 100% no-repeat
-}
-.tl_det {
-	background: url(notifications/tl_detals.gif) 0 0 no-repeat
-}
-.tr_det {
-	background: url(notifications/tr_detals.gif) 100% 0 no-repeat;
-	padding: 3px 25px 4px 40px;
-	color: #294887
-}
-.mg_r {
-	margin: 10px 100px 0 450px;
-}
-.bl_r {
-	background: #b0d3ef url(notifications/bl_detals.gif) 0 100% no-repeat;
-	float: left;
-}
-.br_r {
-	background: url(notifications/br_detals.gif) 100% 100% no-repeat;
-}
-.tl_r {
-	background: url(notifications/tl_detals.gif) 0 0 no-repeat;
-}
-.tr_r {
-	background: url(notifications/tr_detals.gif) 100% 0 no-repeat;
-	padding: 5px 15px 7px 15px;
-	color: #294887
-}
-/*orange*/
-.bl_o {
-	background: #ff793f url(notifications/delete_categoriesLb.gif) 0% 100 % no-repeat;
-}
-.br_o {
-	background: url(notifications/delete_categoriesRb.gif) 100% 100 % no-repeat;
-}
-.tl_o {
-	background: url(notifications/delete_categori.gif) 0% 0% no-repeat;
-}
-.tr_o {
-	background: url(notifications/delete_categoriesR.gif) 100% 0 no-repeat;
-	padding: 5px 15px 7px 15px;
-	color: #ffffff;
-}
-/*green*/
-.bl_gr {
-	background: #81e193 url(notifications/edit_categoriesLb.gif) 0 100 % no-repeat;
-}
-.br_gr {
-	background: url(notifications/edit_categoriesRb.gif) 100% 100% no-repeat;
-}
-.tl_gr {
-	background: url(notifications/edit_categori.gif) 0 0 no-repeat;
-}
-.tr_gr {
-	background: url(notifications/edit_categoriesR.gif) 100% 0 no-repeat;
-	padding: 5px 15px 7px 15px;
-	color: #ffffff
-}
-/**/
-.bl_g {
-	background: #b3ebba url(notifications/addSuccessLeft.jpg) 0 100% no-repeat;
-	float: left;
-}
-.br_g {
-	background: url(notifications/addSuccessLeft.jpg) 100% 100% no-repeat;
-}
-.tl_g {
-	background: url(notifications/addSuccessLeft.jpg) 0 0 no-repeat;
-}
-.tr_g {
-	background: url(notifications/addSuccessLeft.jpg) 100% 0 no-repeat;
-	padding: 3px 15px 4px 15px;
-	color: #000
-}
-.tail_blue {
-	height: 10px;
-	background: url(notifications/bb_detals.gif) no-repeat 80% 100%;
-}
-.tail_green {
-	height: 10px;
-	background: url(notifications/edit_categoriesBtt.gif) no-repeat 80% 100%;
-}
-.tail_orange {
-	height: 10px;
-	background: #ffffff url(notifications/delete_categoriesBtt.gif) no-repeat 80% 100%;
-}
-
 #hint {
 	border: 1px solid #fff;
 	border-radius: 5px;
@@ -403,8 +289,6 @@ table.pop_up {
 	color: #fff;
 	opacity: 0;
 }
-
-
 .div_form{
     border:1px solid #fff;
     border-radius:5px;
@@ -418,7 +302,45 @@ table.pop_up {
 	padding: 3 5 3 5;
 	color: #000;
 }
-
+.form_edit_user{
+    box-shadow: 0 0 15px 1px #1A3457;
+    -webkit-box-shadow: 0 0 15px 1px #1A3457; /* Safari, Chrome */
+    -moz-box-shadow: 0 0 15px 1px #1A3457; /* Firefox */
+}
+#photo_form {
+	width: 320px;
+	vertical-align: top;
+}
+#photo_div {
+	width: 100%;
+	min-height: 300px;
+}
+#photo {
+	max-height: 300px;
+	max-width: 300px;
+	margin: 10px;
+}
+#dp {
+	display: none;
+}
+#container_preview {
+	position: relative;
+	float: left;
+	overflow: hidden;
+	width: 100px;
+	height: 100px;
+	margin: 10px;
+}
+#photo_preview {
+	position: relative;
+}
+#user_info_div {
+	margin-left: 10px;
+	margin-top: 10px;
+	border-radius:5px;
+	-webkit-border-radius:5px; /* Safari, Chrome */
+	-moz-border-radius:5px; /* Firefox */
+}
 #hint{
     border:1px solid #fff;
     border-radius:5px;
@@ -433,14 +355,15 @@ table.pop_up {
 	padding: 3 5 3 5;
 	color: #fff;
     opacity: 0;
+	position: absolute;
+	z-index: 100;
 }
-
-#text_image {text-align: center;}
-
+#text_image {
+	text-align: center;
+}
 #loginbox td, #register td {
 	min-width: 120px;
 }
-
 #logout_btn {
 	position: absolute;
 	bottom: 0;

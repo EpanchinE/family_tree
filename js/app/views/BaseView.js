@@ -91,7 +91,6 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			if(data.photo_url == "" || data.photo_url == null){data.photo_url = "no_avatar.jpg"};
 			var photo = this.texture('assets/images/uploaded/avatars/'+data.photo_url, 260, 260);
 			photo.position.set(0, 40, 1);
-			//this.container.style.background = "url('trash/back_11111.jpg')";
 			
 			var elems = {
                 'child': {
@@ -548,6 +547,15 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
                     spNode = null;
                 }
             }
+			//set main node scale
+			for(i = 0; i < this.objects.length; i++)
+			{
+				if (this.objects[i].info.user_id == data2.id)
+				{
+					this.objects[i].scale.x = 1.4;
+					this.objects[i].scale.y = 1.4;
+				}
+			}
 		},
 		texture: function(path, size_x, size_y) {
 					var tex = THREE.ImageUtils.loadTexture(path);
@@ -715,6 +723,8 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 
 				if( intersects.length > 0 ) {
 					this.container.style.cursor = 'pointer';
+					
+					//show hint on mouse over buttons
 					hint = false;
 					for(i = 0; i < intersects.length; i++)
 					{
@@ -768,24 +778,24 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 					
 					if(intersects.length >1)
 					{
+						//set full visibility for buttons
 						par = intersects[1].object.parent;
 						for( j = 0; j < par.children.length; j++) {						
 							if(par.children[j].name == 'child') {
-								//par.children[j].visible = true;
 								par.children[j].children[0].material.map.image.src = 'trash/add.png';
 							}else if(par.children[j].name == 'parent') {
-								//par.children[j].visible = true;
 								par.children[j].children[0].material.map.image.src = 'trash/add.png';
 							}else if(par.children[j].name == 'edit') {
-								//par.children[j].visible = true;
 								par.children[j].children[0].material.map.image.src = 'trash/edit.png';
 							}else if(par.children[j].name == 'delete') {
-								//par.children[j].visible = true;
 								par.children[j].children[0].material.map.image.src = 'trash/delete.png';
 							}else if(par.children[j].name == 'spouse') {
 								par.children[j].children[0].material.map.image.src = 'trash/add.png';
+							}else{
+								par.position.z = 100;
 							}
 						}
+						
 					}
                     if(this.SELECTED == intersects[0].object.parent) {
 						this.container.style.cursor = 'pointer';
@@ -800,25 +810,29 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 						intersects[0].object.parent.redrawLine();
 					}
                     
-				} else {					
+				} else {
+					//mouse is not over nodes
+					for(i = 0; i < this.objects.length; i++)
+					{
+						this.objects[i].position.z = 0;
+					}
+					
+					//hide hint
 					$('#hint').css('opacity','0');
 					$('#hint').css('left',-100);
 					$('#hint').css('top',-100);
 					
                     if(!this.SELECTED){
+						//set transpararency for buttons
                         for( i = 0; i < this.objects.length; i++) {
     						for( j = 0; j < this.objects[i].children.length; j++) {
     							if(this.objects[i].children[j].name == 'child') {
-									//par.children[j].visible = true;
 									this.objects[i].children[j].children[0].material.map.image.src = 'trash/add_tr.png';
 								}else if(this.objects[i].children[j].name == 'parent') {
-									//par.children[j].visible = true;
 									this.objects[i].children[j].children[0].material.map.image.src = 'trash/add_tr.png';
 								}else if(this.objects[i].children[j].name == 'edit') {
-									//par.children[j].visible = true;
 									this.objects[i].children[j].children[0].material.map.image.src = 'trash/edit_tr.png';
 								}else if(this.objects[i].children[j].name == 'delete') {
-									//par.children[j].visible = true;
 									this.objects[i].children[j].children[0].material.map.image.src = 'trash/delete_tr.png';
 								}else if(this.objects[i].children[j].name == 'spouse') {
 									this.objects[i].children[j].children[0].material.map.image.src = 'trash/add_tr.png';
@@ -883,7 +897,6 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 		},
 		
 		navigation: function(event) {
-				//console.log(event.target);
 				event.preventDefault();
 				switch (event.target.id) {
 					case "arrowdown":
@@ -1042,7 +1055,6 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 		},
 		addNode : function(response) {
 			this.redrawTree();
-			//showPopup('show-popup', 'green', 'Saved', 2000);
 		},
 		saveNode : function(options) {
 			
@@ -1051,7 +1063,6 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 				dataType : 'json',
 				data : options.data,
 				success : $.proxy(function(response) {
-					//showPopup('show-popup', 'green', 'Saved', 2000);
 				}, this),
 				error : function(error) {
 					console.log(error.responseText);

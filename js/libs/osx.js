@@ -36,7 +36,7 @@ var OSX = {
 				case 'edit_person':
 					title=$("#osx-modal-title-edit").html("Editing person");
 					break;
-                case 'add_spouse':
+				case 'add_spouse':
 					title=$("#osx-modal-title-edit").html("Adding spouse");
 					break;
 			}
@@ -46,7 +46,7 @@ var OSX = {
 				setTimeout(function () {
 					var h = $("#osx-modal-data-edit", self.container).height()
 					+ title.height()
-					+ 85; // padding
+					+ 0; // padding
 					d.container.animate(
 					{
 						height: h
@@ -67,16 +67,16 @@ var OSX = {
 							$('#b_date').val(user_data.info.b_date);
 							$('#d_date').val(user_data.info.d_date);
 							$('#about').html(user_data.info.comment);
-							
-							if(user_data.info.sex == 'm') 
+
+							if(user_data.info.sex == 'm')
 							{
 								$('#m_radio').attr('checked', true);
 							}
-							else if(user_data.info.sex == 'f') 
+							else if(user_data.info.sex == 'f')
 							{
 								$('#f_radio').attr('checked', true);
 							}
-							
+
 							if(user_data.info.photo_url != '')
 							{
 								$('#photo').attr('src','assets/images/uploaded/avatars/'+user_data.info.photo_url);
@@ -103,36 +103,39 @@ var OSX = {
 						upclick({
 							element: upload_input,
 							action: 'server/api/save_photo',
-							action_params: {'user_id': $('#user_id').val(), 'login_name': 'new'},/* change login !!! */
+							action_params: {
+								'user_id': $('#user_id').val(), 
+								'login_name': 'new'
+							},/* change login !!! */
 							onstart:
-								function(filename)
-								{
-									//alert('Start upload: '+filename);
-								},
+							function(filename)
+							{
+							//alert('Start upload: '+filename);
+							},
 							oncomplete:
-								function(response) 
+							function(response)
+							{
+								resp = JSON.parse(response);
+								if(resp.status)
 								{
-									resp = JSON.parse(response);
-									if(resp.status)
-									{
-										$('#photo').attr('src','/assets/images/uploaded/avatars/'+resp.response);
-										$('#photo_native_size').attr('src','/assets/images/uploaded/avatars/'+resp.response);
-										$('#text_image').attr('style','display: block');
-										$('.imgareaselect-outer').attr('style','display:none;');
-										$('.body div').each(function(index){
-											if(this.style['z-index'] == 1004)
-											{
-												this.style.height = 0;
-												this.style.width = 0;
-											}				
-										});										
-										initImgCrop('/assets/images/uploaded/avatars/'+resp.response);
-									}
-									else
-									{
-										alert('Wrong image format!');
-									}
+									$('#photo').attr('src','/assets/images/uploaded/avatars/'+resp.response);
+									$('#photo_native_size').attr('src','/assets/images/uploaded/avatars/'+resp.response);
+									$('#text_image').attr('style','display: block');
+									$('.imgareaselect-outer').attr('style','display:none;');
+									$('.body div').each(function(index){
+										if(this.style['z-index'] == 1004)
+										{
+											this.style.height = 0;
+											this.style.width = 0;
+										}
+									});
+									initImgCrop('/assets/images/uploaded/avatars/'+resp.response);
 								}
+								else
+								{
+									alert('Wrong image format!');
+								}
+							}
 						});
 						initMCE();
 					}
@@ -155,9 +158,9 @@ var OSX = {
 				if(this.style['z-index'] == 1004)
 				{
 					this.style.display = 'none';
-				}				
+				}
 			});
-			
+
 			self.close(); // or $.modal.close();
 		}
 		);
@@ -212,7 +215,7 @@ function preview(img, selection) {
 }
 
 function initImgCrop(imgName){
-$('#photo_preview').attr('src', imgName);
+	$('#photo_preview').attr('src', imgName);
 	$('#photo').imgAreaSelect({
 		aspectRatio: '1:1',
 		handles: true,
