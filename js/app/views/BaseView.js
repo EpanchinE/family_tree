@@ -547,6 +547,15 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
                     spNode = null;
                 }
             }
+			//set main node scale
+			for(i = 0; i < this.objects.length; i++)
+			{
+				if (this.objects[i].info.user_id == data2.id)
+				{
+					this.objects[i].scale.x = 1.4;
+					this.objects[i].scale.y = 1.4;
+				}
+			}
 		},
 		texture: function(path, size_x, size_y) {
 					var tex = THREE.ImageUtils.loadTexture(path);
