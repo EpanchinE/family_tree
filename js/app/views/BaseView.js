@@ -185,16 +185,16 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
                     }
                     if (f_node) this.create_relation(nodex,f_node,"father","parent",f_id,i);
                     if (data[f_id].ch_ids.length == 1 || i > 2) {
-			f_node.position.set(nodex.position.x - (Math.pow((4 - i), 0.5)) * this.nodeWidth, (i - 1) * (-this.nodeHeight - 200), 0);
-			this.width_spouse_for_f = Math.abs(f_node.position.x) + 200;
-		    }
+            			f_node.position.set(nodex.position.x - (Math.pow((4 - i), 1.25)) * this.nodeWidth, (i - 1) * (-this.nodeHeight - 200), 0);
+            			if (this.width_spouse_for_f < Math.abs(f_node.position.x) + 300) this.width_spouse_for_f = Math.abs(f_node.position.x) + 300;
+        		    }
                     if (data[f_id].ch_ids.length > 1 && i < 3){
                         if (data[id].sex=="f"){
                             f_node.position.set(nodex.position.x, (i - 1) * (-this.nodeHeight - 200), 0);
                         }
                         if (data[id].sex=="m"){
-                            var norm =(Math.pow((4 - i), 1.25)) * (this.nodeWidth);
-                            var needed = (data[f_id].ch_ids.length*(this.nodeWidth+200)); 
+                            var norm =(Math.pow((4 - i), 1.25)) * (this.nodeWidth) * 2;
+                            var needed = ((data[f_id].ch_ids.length-1)*(this.nodeWidth+200)); 
                             if (norm < needed) {
                                 f_node.position.set(nodex.position.x - needed, (i - 1) * (-this.nodeHeight - 200), 0);
                                 if (i==2) this.width_spouse_for_f = needed;
@@ -218,16 +218,16 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
                     }
 					if (m_node) this.create_relation(nodex,m_node,"mother","parent",m_id,i);
                     if (data[m_id].ch_ids.length == 1 || i > 2){
-						m_node.position.set(nodex.position.x + (Math.pow((4 - i), 0.5)) * this.nodeWidth, (i - 1) * (-this.nodeHeight - 200), 0);
-						this.width_spouse_for_m = Math.abs(m_node.position.x) + 200;
+						m_node.position.set(nodex.position.x + (Math.pow((4 - i), 1.25)) * this.nodeWidth, (i - 1) * (-this.nodeHeight - 200), 0);
+						if (this.width_spouse_for_m < Math.abs(m_node.position.x) + 300) this.width_spouse_for_m = Math.abs(m_node.position.x) + 300;
 					}
-			if (data[m_id].ch_ids.length > 1 && i < 3){
+                    if (data[m_id].ch_ids.length > 1 && i < 3){
                         if (data[id].sex=="m"){
                             m_node.position.set(nodex.position.x, (i - 1) * (-this.nodeHeight - 200), 0);
                         }
                         if (data[id].sex=="f"){
-                            var norm =(Math.pow((4 - i), 1.25)) * (this.nodeWidth);
-                            var needed = (data[m_id].ch_ids.length*(this.nodeWidth+200)); 
+                            var norm =(Math.pow((4 - i), 1.25)) * (this.nodeWidth) * 2;
+                            var needed = ((data[m_id].ch_ids.length-1)*(this.nodeWidth+200));
                             if (norm < needed) {
                                 m_node.position.set(nodex.position.x + needed, (i - 1) * (-this.nodeHeight - 200), 0);
                                 if (i==2) this.width_spouse_for_m = needed;
@@ -281,7 +281,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
                 if (dx < this.chWidth[data2.id]) {dx = this.chWidth[data2.id];} else {this.spouseState = dx - this.chWidth[data2.id];}
             }else{
                 var dx = -this.width_spouse_for_f - this.nodeWidth - 600;
-                if (dx > -this.chWidth[data2.id]) {dx = -this.chWidth[data2.id]} else {this.spouseState = -dx - this.chWidth[data2.id];}
+                if (dx > -this.chWidth[data2.id]) {dx = -this.chWidth[data2.id];} else {this.spouseState = -dx - this.chWidth[data2.id];}
             }
             var node = this.create_node(data[id]);
             node.position.set(nodex.position.x + dx, nodex.position.y, 0);
@@ -911,7 +911,6 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 		animate: function() {
 				requestAnimationFrame($.proxy(this.animate, this));
 				this.render();
-				this.stats.update();
 				
 		},
 		render: function(){
