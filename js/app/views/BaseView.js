@@ -711,7 +711,9 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 				
 			}
 		},
-		
+		RISED : null,
+        riseX : 0,
+        riseY : 0,
 		onDocumentMouseMove: function(event) {
 				event.preventDefault();
 				this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -776,7 +778,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 						}
 					}
 					
-					if(intersects.length >1)
+					if(intersects.length >1 && this.RISED == null)
 					{
 						//set full visibility for buttons
 						par = intersects[1].object.parent;
@@ -791,11 +793,15 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 								par.children[j].children[0].material.map.image.src = 'trash/delete.png';
 							}else if(par.children[j].name == 'spouse') {
 								par.children[j].children[0].material.map.image.src = 'trash/add.png';
-							}else{
-								par.position.z = 100;
+							}else if(this.RISED == null){
+                                par.position.z = 300;
+                                this.riseX = (par.position.x - this.camera.position.x)*par.position.z/this.camera.position.z;
+                                this.riseY = (par.position.y - this.camera.position.y)*par.position.z/this.camera.position.z;
+                                par.position.x -= this.riseX;
+                                par.position.y -= this.riseY;
+                                this.RISED = par;
 							}
-						}
-						
+						}					
 					}
                     if(this.SELECTED == intersects[0].object.parent) {
 						this.container.style.cursor = 'pointer';
@@ -811,12 +817,12 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 					}
                     
 				} else {
-					//mouse is not over nodes
-					for(i = 0; i < this.objects.length; i++)
-					{
-						this.objects[i].position.z = 0;
-					}
-					
+                    if (this.RISED != null){
+                        this.RISED.position.x += this.riseX;
+                        this.RISED.position.y += this.riseY;
+                        this.RISED.position.z = 0;
+                        this.RISED = null;
+                    }					
 					//hide hint
 					$('#hint').css('opacity','0');
 					$('#hint').css('left',-100);
