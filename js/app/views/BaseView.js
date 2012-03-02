@@ -111,24 +111,24 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			// TODO coords
 			if(data.photo_url == "" || data.photo_url == null){data.photo_url = "no_avatar.jpg"};
 			var photo = this.texture('assets/images/uploaded/avatars/'+data.photo_url, 260, 260);
-			photo.position.set(0, 40, 1);
+			photo.position.set(0, 40, 4);
 			
 			var elems = {
                 'child': {
-                    width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/add.png', trPath: 'trash/add_tr.png', posX: this.mouseX, posY: this.mouseY + Math.floor(this.nodeHeight / 2)
+                    width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/add.png', trPath: 'trash/add_tr.png', posX: this.mouseX, posY: this.mouseY + Math.floor(this.nodeHeight / 2) - 30, posZ: 10
                 },
                 'edit': {
-                    width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/edit.png', trPath: 'trash/edit_tr.png', posX: this.mouseX+this.nodeWidth/4, posY: this.mouseY + Math.floor(this.nodeHeight / 2)
+                    width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/edit.png', trPath: 'trash/edit_tr.png', posX: this.mouseX+this.nodeWidth/4, posY: this.mouseY + Math.floor(this.nodeHeight / 2) - 30, posZ: 10
                 },
                 'delete': {
-                    width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/delete.png', trPath: 'trash/delete_tr.png', posX: this.mouseX-this.nodeWidth/4, posY: this.mouseY + Math.floor(this.nodeHeight / 2)
+                    width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/delete.png', trPath: 'trash/delete_tr.png', posX: this.mouseX-this.nodeWidth/4, posY: this.mouseY + Math.floor(this.nodeHeight / 2) - 30, posZ: 10
                 }
             };
-            if (!data.f_id || !data.m_id) elems.parent = {width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/add.png', trPath: 'trash/add_tr.png', posX: this.mouseX, posY: this.mouseY - Math.floor(this.nodeHeight / 2)+20};
+            if (!data.f_id || !data.m_id) elems.parent = {width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/add.png', trPath: 'trash/add_tr.png', posX: this.mouseX, posY: this.mouseY - Math.floor(this.nodeHeight / 2) + 50, posZ: 10};
             if (!data.spouse_id){
-                if(data.sex == "m") var dx = Math.floor(this.nodeWidth / 2)-20;
-                if(data.sex == "f") var dx = -Math.floor(this.nodeWidth / 2)+20;
-                elems.spouse = {width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/add.png', trPath: 'trash/add_tr.png', posX: this.mouseX + dx, posY: this.mouseY/2};
+                if(data.sex == "m") var dx = Math.floor(this.nodeWidth / 2)-40;
+                if(data.sex == "f") var dx = -Math.floor(this.nodeWidth / 2)+40;
+                elems.spouse = {width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/add.png', trPath: 'trash/add_tr.png', posX: this.mouseX + dx, posY: this.mouseY/2, posZ: 10};
             } 
 			
 			
@@ -169,7 +169,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
         nodeElement: function(elem, name){
             var element = new THREE.Mesh(new THREE.PlaneGeometry(elem.width, elem.height));
 			element.add(this.texture(elem.path, elem.width, elem.height));
-			element.position.set(elem.posX, elem.posY, 1);
+			element.position.set(elem.posX, elem.posY, elem.posZ);
 			element.matrixAutoUpdate = false;
 			element.updateMatrix();
 			element.overdraw = true;
