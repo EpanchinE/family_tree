@@ -6,7 +6,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 		mouseY : 0,
         reverse : 1,
 		stepY : 300,
-		lineAnch : 375,
+		lineTurne : 375,
 		
 		isMouseDown : false,
 		onMouseDownPosition: null,
@@ -26,8 +26,10 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			"mousewheel canvas" : "onDocumentMouseWheel",
 			"click canvas": "onClick",
 			"click #submit_person": "submitFunc",
-			"click #logout_btn": "logout",
-			"click #revers": "reverseTree"
+			"click #logout_btn" : "logout",
+			"click #revers" : "reverseTree",
+            "mousemove #navigator" : "navShow",
+            "mouseout #navigator" : "navHide"
 		},
 		
 		initialize: function(){
@@ -70,9 +72,9 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 					this.camera.position.z = 9099 - ui.value;
 				},this)
 			});
-			$('#navigator').on('mousemove', function(){$('#navigator').css('opacity', '0.8');});
-			$('#navigator').on('mouseout', function(){$('#navigator').css('opacity', '0.5');});
-            //$('#reverse').on('click', $.proxy(this.reverseTree(), this));
+			//$('#navigator').on('mousemove', function(){$('#navigator').css('opacity', '0.8');});
+			//$('#navigator').on('mouseout', function(){$('#navigator').css('opacity', '0.5');});\
+            
 				
 			this.container = document.createElement('div');
 			$(this.el).append(this.container);
@@ -89,12 +91,21 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			this.container.appendChild(this.renderer.domElement);
 		},
         
+        navShow: function(){
+            $('#navigator').css('opacity', '0.8');
+        },
+        
+        navHide: function(){
+            $('#navigator').css('opacity', '0.5');
+        },
+        
 		reverseTree: function (){
             console.log(2);
             if (this.reverse == 1) {this.reverse = -1;}
             else if (this.reverse == (-1)) this.reverse = 1; 
             this.redrawTree(this.data2.id);
         },
+        
 		create_node: function (data){
 			var node = new THREE.Object3D();
 			// TODO coords
@@ -351,20 +362,20 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
                 geom.vertices.push(new THREE.Vertex(new THREE.Vector3(child.position.x, child.position.y, -10)));
 				
             if (!spouse){
-                geom.vertices.push(new THREE.Vertex(new THREE.Vector3(child.position.x, child.position.y - this.reverse*this.lineAnch, -10)));
+                geom.vertices.push(new THREE.Vertex(new THREE.Vector3(child.position.x, child.position.y - this.reverse*this.lineTurne, -10)));
 				if (child.mother && child.father){
-				    geom.vertices.push(new THREE.Vertex(new THREE.Vector3((child.mother.position.x + child.father.position.x)/2, child.position.y - this.reverse*this.lineAnch, -10)));
+				    geom.vertices.push(new THREE.Vertex(new THREE.Vector3((child.mother.position.x + child.father.position.x)/2, child.position.y - this.reverse*this.lineTurne, -10)));
                     geom.vertices.push(new THREE.Vertex(new THREE.Vector3((child.mother.position.x + child.father.position.x)/2, parent.position.y, -10)));
                     geom.vertices.push(new THREE.Vertex(new THREE.Vector3(parent.position.x, parent.position.y, -10)));
 				}
                 if (child.mother && !child.father){
-                    geom.vertices.push(new THREE.Vertex(new THREE.Vector3(child.position.x, child.mother.position.y + this.reverse*this.lineAnch, -10)));
-					geom.vertices.push(new THREE.Vertex(new THREE.Vector3(child.mother.position.x, child.mother.position.y + this.reverse*this.lineAnch, -10)));
+                    geom.vertices.push(new THREE.Vertex(new THREE.Vector3(child.position.x, child.mother.position.y + this.reverse*this.lineTurne, -10)));
+					geom.vertices.push(new THREE.Vertex(new THREE.Vector3(child.mother.position.x, child.mother.position.y + this.reverse*this.lineTurne, -10)));
                     geom.vertices.push(new THREE.Vertex(new THREE.Vector3(child.mother.position.x, child.mother.position.y, -10)));
                 }
                 if (!child.mother && child.father){
-                    geom.vertices.push(new THREE.Vertex(new THREE.Vector3(child.position.x, child.father.position.y + this.reverse*this.lineAnch, -10)));
-					geom.vertices.push(new THREE.Vertex(new THREE.Vector3(child.father.position.x, child.father.position.y + this.reverse*this.lineAnch, -10)));
+                    geom.vertices.push(new THREE.Vertex(new THREE.Vector3(child.position.x, child.father.position.y + this.reverse*this.lineTurne, -10)));
+					geom.vertices.push(new THREE.Vertex(new THREE.Vector3(child.father.position.x, child.father.position.y + this.reverse*this.lineTurne, -10)));
                     geom.vertices.push(new THREE.Vertex(new THREE.Vector3(child.father.position.x, child.father.position.y, -10)));
                 }
             } else {
@@ -642,21 +653,11 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
         			///////////////////////////////////////////////////////////////////////////////////////////////////
         },
 		onDocumentMouseDown: function(event) {
-
-				event.preventDefault();
-				var vector = new THREE.Vector3(this.mouse.x, this.mouse.y, 0.5);
-				this.projector.unprojectVector(vector, this.camera);
-				var ray = new THREE.Ray(this.camera.position, vector.subSelf(this.camera.position).normalize());
-				var intersects = ray.intersectObjects(this.objects);
-				if(intersects.length > 0) {
-					//this.SELECTED = intersects[0].object.parent;
-				} else {
-					this.isMouseDown = true;
-					this.container.style.cursor = 'move';
-					this.SELECTED = null;
-				}
-				this.onMouseDownPosition.x = event.clientX;
-				this.onMouseDownPosition.y = event.clientY;
+			event.preventDefault();
+			this.isMouseDown = true;
+			this.container.style.cursor = 'move';
+			this.onMouseDownPosition.x = event.clientX;
+			this.onMouseDownPosition.y = event.clientY;
 		},
 		
 		onClick: function(event) {
@@ -665,7 +666,8 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			this.projector.unprojectVector(vector, this.camera);
 			var ray = new THREE.Ray(this.camera.position, vector.subSelf(this.camera.position).normalize());
 			var intersects = ray.intersectObjects(this.objects);
-			if(intersects.length > 0) {
+            
+			if(intersects.length > 1) {
 			    var but = false;
                 for(i = 0; i < intersects.length; i++) {
 					if(intersects[i].object.name == 'child') {
@@ -677,8 +679,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 						OSX.init_edit({"action": 'add_child'}, intersects[i].object.parent);
                         but = true;
 					}
-					else if(intersects[i].object.name == 'parent')
-					{	/////////////////////////////////////   ADDING PARENT    /////////////////////////////////////////
+					else if(intersects[i].object.name == 'parent'){
                         if (!intersects[0].object.parent.father || !intersects[0].object.parent.mother){
                             nodex = intersects[i].object.parent;
                 
@@ -688,7 +689,6 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 								};
 							 OSX.init_edit({"action": 'add_parent'}, nodex);
                         }
-                        //////////////////////////////////////////////////////////////////////////////////////////////////
                         but = true;
 					}else if(intersects[i].object.name == 'edit') {
 						//edit persone 
@@ -713,12 +713,9 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
                         but = true;
 					}
 				}
-                if (!but){
+                if (!but && this.RISED){
                     this.redrawTree(intersects[0].object.parent.info.user_id);
-                }
-                
-			} else {
-				
+                }   
 			}
 		},
 		RISED : null,
@@ -726,14 +723,16 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
         riseY : 0,
 		onDocumentMouseMove: function(event) {
 			event.preventDefault();
-			this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+			
+            this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 			this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-			var vector = new THREE.Vector3(this.mouse.x, this.mouse.y, 0.5);
+			
+            var vector = new THREE.Vector3(this.mouse.x, this.mouse.y, 0.5);
 			this.projector.unprojectVector(vector, this.camera);
 			var ray = new THREE.Ray(this.camera.position, vector.subSelf(this.camera.position).normalize());
 			var intersects = ray.intersectObjects(this.objects);
 
-			if( intersects.length > 0 ) {
+			if( intersects.length > 0 && !this.isMouseDown) {
 				this.container.style.cursor = 'pointer';
 				
 				//show hint on mouse over buttons
@@ -788,11 +787,32 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 					}
 				}
 				
-				if(intersects.length >1 && this.RISED == null)
-				{
+				if(this.RISED != null){
+				    
+                    if (this.RISED != intersects[1].object.parent) {
+                        this.RISED.position.x += this.riseX;
+    					this.RISED.position.y += this.riseY;
+    					this.RISED.position.z = 0;
+    					for( j = 0; j < this.RISED.children.length; j++) {
+    						if(this.RISED.children[j].name == 'child') {
+    							this.RISED.children[j].children[0].material.map.image.src = 'trash/add_tr.png';
+    						}else if(this.RISED.children[j].name == 'parent') {
+    							this.RISED.children[j].children[0].material.map.image.src = 'trash/add_tr.png';
+    						}else if(this.RISED.children[j].name == 'edit') {
+    							this.RISED.children[j].children[0].material.map.image.src = 'trash/edit_tr.png';
+    						}else if(this.RISED.children[j].name == 'delete') {
+    							this.RISED.children[j].children[0].material.map.image.src = 'trash/delete_tr.png';
+    						}else if(this.RISED.children[j].name == 'spouse') {
+    							this.RISED.children[j].children[0].material.map.image.src = 'trash/add_tr.png';
+    						}
+    					}
+    					this.RISED = null;
+					}
+                }
+                if(this.RISED == null){
 					//set full visibility for buttons
 					par = intersects[1].object.parent;
-					for( j = 0; j < par.children.length; j++) {						
+					for( j = 0; j < par.children.length; j++) {
 						if(par.children[j].name == 'child') {
 							par.children[j].children[0].material.map.image.src = 'trash/add.png';
 						}else if(par.children[j].name == 'parent') {
@@ -803,21 +823,33 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 							par.children[j].children[0].material.map.image.src = 'trash/delete.png';
 						}else if(par.children[j].name == 'spouse') {
 							par.children[j].children[0].material.map.image.src = 'trash/add.png';
-						}else if(this.RISED == null){
-							par.position.z = 300;
-							this.riseX = (par.position.x - this.camera.position.x)*par.position.z/this.camera.position.z;
-							this.riseY = (par.position.y - this.camera.position.y)*par.position.z/this.camera.position.z;
-							par.position.x -= this.riseX;
-							par.position.y -= this.riseY;
-							this.RISED = par;
 						}
-					}					
+					}
+                    par.position.z = 300;
+					this.riseX = (par.position.x - this.camera.position.x)*par.position.z/this.camera.position.z;
+					this.riseY = (par.position.y - this.camera.position.y)*par.position.z/this.camera.position.z;
+					par.position.x -= this.riseX;
+					par.position.y -= this.riseY;
+                    this.RISED = par;
 				}
 			} else {
 				if (this.RISED != null){
 					this.RISED.position.x += this.riseX;
 					this.RISED.position.y += this.riseY;
 					this.RISED.position.z = 0;
+                    for( j = 0; j < this.RISED.children.length; j++) {
+						if(this.RISED.children[j].name == 'child') {
+							this.RISED.children[j].children[0].material.map.image.src = 'trash/add_tr.png';
+						}else if(this.RISED.children[j].name == 'parent') {
+							this.RISED.children[j].children[0].material.map.image.src = 'trash/add_tr.png';
+						}else if(this.RISED.children[j].name == 'edit') {
+							this.RISED.children[j].children[0].material.map.image.src = 'trash/edit_tr.png';
+						}else if(this.RISED.children[j].name == 'delete') {
+							this.RISED.children[j].children[0].material.map.image.src = 'trash/delete_tr.png';
+						}else if(this.RISED.children[j].name == 'spouse') {
+							this.RISED.children[j].children[0].material.map.image.src = 'trash/add_tr.png';
+						}
+					}
 					this.RISED = null;
 				}					
 				//hide hint
@@ -825,60 +857,28 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 				$('#hint').css('left',-100);
 				$('#hint').css('top',-100);
 				
-				if(!this.SELECTED){
-					//set transpararency for buttons
-					for( i = 0; i < this.objects.length; i++) {
-						for( j = 0; j < this.objects[i].children.length; j++) {
-							if(this.objects[i].children[j].name == 'child') {
-								this.objects[i].children[j].children[0].material.map.image.src = 'trash/add_tr.png';
-							}else if(this.objects[i].children[j].name == 'parent') {
-								this.objects[i].children[j].children[0].material.map.image.src = 'trash/add_tr.png';
-							}else if(this.objects[i].children[j].name == 'edit') {
-								this.objects[i].children[j].children[0].material.map.image.src = 'trash/edit_tr.png';
-							}else if(this.objects[i].children[j].name == 'delete') {
-								this.objects[i].children[j].children[0].material.map.image.src = 'trash/delete_tr.png';
-							}else if(this.objects[i].children[j].name == 'spouse') {
-								this.objects[i].children[j].children[0].material.map.image.src = 'trash/add_tr.png';
-							}
-						}
-					}
+				this.container.style.cursor = 'auto';
+				if(this.isMouseDown) {
+					this.container.style.cursor = 'move';
+					var deltaX = -(event.clientX - this.onMouseDownPosition.x);
+					var deltaY = event.clientY - this.onMouseDownPosition.y;
+					this.camera.position.x += deltaX * this.camera.position.z / 750;
+					this.camera.position.y += deltaY * this.camera.position.z / 750;
+					this.onMouseDownPosition.x = event.clientX;
+					this.onMouseDownPosition.y = event.clientY;
+					this.camera.updateMatrix();
+				} else {
 					this.container.style.cursor = 'auto';
-					if(this.isMouseDown) {
-						this.container.style.cursor = 'move';
-						var deltaX = -(event.clientX - this.onMouseDownPosition.x);
-						var deltaY = event.clientY - this.onMouseDownPosition.y;
-						this.camera.position.x += deltaX * this.camera.position.z / 450;
-						this.camera.position.y += deltaY * this.camera.position.z / 450;
-						this.onMouseDownPosition.x = event.clientX;
-						this.onMouseDownPosition.y = event.clientY;
-						this.camera.updateMatrix();
-					} else {
-						this.container.style.cursor = 'auto';
-					}
 				}
 			}
 		},
 		
 		onDocumentMouseUp: function(event) {
-				this.SELECTED = null;
-				this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-				this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-				var vector = new THREE.Vector3(this.mouse.x, this.mouse.y, 0.5);
-				this.projector.unprojectVector(vector, this.camera);
-				var ray = new THREE.Ray(this.camera.position, vector.subSelf(this.camera.position).normalize());
-				var intersects = ray.intersectObjects(this.objects);
-				if(intersects.length > 0) {
-					this.container.style.cursor = 'pointer';
-				} else {
-					this.container.style.cursor = 'auto';
-					this.isMouseDown = false;
-					this.onMouseDownPosition.x = event.clientX - this.onMouseDownPosition.x;
-					this.onMouseDownPosition.y = event.clientY - this.onMouseDownPosition.y;
-				}
+            this.container.style.cursor = 'auto';
+            this.isMouseDown = false;
 		},
 		
-		onDocumentMouseWheel: function(event) {
-			
+		onDocumentMouseWheel: function(event) {			
 			if(this.camera.position.z > 0)
 				this.camera.position.z -= event.originalEvent.wheelDeltaY;
 			if(this.camera.position.z < 100)
