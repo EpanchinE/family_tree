@@ -63,9 +63,9 @@
 					<table id="data_table">
 						<tr>
 							<td id="photo_form">
-								<div id="photo_upload">
+								<div id="photo_upload" style="height: 80px;">
 									<input type="button" id="upload_input" value="Upload photo">
-									(*.jpg, *.jpeg, *.png, *.gif)
+									<div>*.jpg, *.jpeg, *.png, *.gif (max file size 2 Mb)</div>
 								</div>
 								<div id="photo_crop">
 									<div id="text_image">
@@ -84,6 +84,8 @@
 									<input type="hidden" id="y2" name="y2" value="" />
 									<input type="hidden" id="w" name="w" value="" />
 									<input type="hidden" id="h" name="h" value="" />
+                                    <input type="hidden" id="cropped" name="cropped" value="" />	  	
+                                    <input type="hidden" id="uploaded" name="uploaded" value="" />
 								</div>
 							</td>
 							<td>
