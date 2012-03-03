@@ -89,7 +89,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			var node = new THREE.Object3D();
 			// TODO coords
 			if(data.photo_url == "" || data.photo_url == null){data.photo_url = "no_avatar.jpg"};
-			var photo = this.texture('assets/images/uploaded/avatars/'+data.photo_url, 260, 260);
+			var photo = this.texture('assets/images/uploaded/avatars/thumbs/'+data.photo_url, 260, 260);
 			photo.position.set(0, 40, 1);
 			
 			var elems = {
@@ -949,13 +949,23 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			var h = $('#dp').height();
 			var w = $('#dp').width();
 			var scale = 1;
-			if(h > 300 || w > 300) {
-				scale = h / 300;
+			var crop = 0;
+			var upload = 0;
+			if(h > $('#photo').height() || w > $('#photo').width()) {
+				scale = h / $('#photo').height();
 			}
 			if(w > h) {
-				scale = w / 300;
+				scale = w / $('#photo').width();
 			}
-
+			if ($('#cropped').val() == '1')
+			{
+				crop = 1;
+			}
+			if ($('#uploaded').val() == '1')
+			{
+				upload = 1;
+			}
+			
 			console.log(this.TempObj);
 			var data = {
 				'id': $('#user_id').val(),
@@ -975,7 +985,9 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 				'spouse_id' : $('#spouse_id').val(),
 				'sex' : $('input:radio[name="gender"]:checked').val(),
 				'photo_url' : $('#photo').attr('src'),
-				'comment' : $('#about').val()
+				'comment' : $('#about').val(),
+				'crop' : crop,
+				'upload' : upload
 				
 			};
 			this.TempObj.node.info.id = this.TempObj.node.info.user_id;
@@ -1069,6 +1081,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 				dataType : 'json',
 				data : options.data,
 				success : $.proxy(function(response) {
+					this.redrawTree();
 				}, this),
 				error : function(error) {
 					console.log(error.responseText);

@@ -203,21 +203,37 @@ class Api extends CI_Controller {
 						    WHERE `id`="'.$value->id.'" AND
 							       `user_id`="'.$this->session->userdata('user_id').'"
 					    ');
-		if(!isset($value->crop)){$value->crop=0;}
 		if($value->crop) {
 			$image = $this->image_model;
 			$image->source_file = "../".$value->photo_url;
 			$image->returnType = 'array';
-			$value->x1 = (-1)*ceil($value->x1);	
+			/*$value->x1 = (-1)*ceil($value->x1);	
 	  		$value->y1 = (-1)*ceil($value->y1);
 			$width = 300;
 			$height = 300;
-			$img = $image->crop($width, $height, $value->x1, $value->y1);
+			$img = $image->crop($width, $height, $value->x1, $value->y1);*/
+			$value->x1 = floor($value->x1);	
+	  		$value->y1 = floor($value->y1);
+			$value->x2 = floor($value->x2);	
+	  		$value->y2 = floor($value->y2);
+			$img = $image->crop_img("../".$value->photo_url, $value->w, $value->h, $value->x1, $value->y1, $value->x2, $value->y2, $value->id);
 
 			$crop->action = "crop_photo";
 	    	$crop->status = "1";
 	    	$crop->response = $img['image'];
 	    	$json->crop = $crop;
+		}
+		else
+		{
+			if ($value->upload)
+			{
+				$image = $this->image_model;
+				$image->source_file = "../".$value->photo_url;
+				$sImage = (($image->source_file!='')&&(file_exists($image->source_file))) ? $image->source_file : $image->doDie($image->errors['no-image']);
+				$srcPath = (strstr($sImage,'/')) ? substr($sImage,0,strrpos($sImage,'/')+1) : '';
+				$srcName = str_replace($srcPath,'',$sImage);
+				copy($image->uploadTo.$srcName, $image->newPath.'/'.$srcName);
+			}
 		}
 	    $json->action = "save_node";
 	    $json->status = "1";
@@ -385,9 +401,8 @@ class Api extends CI_Controller {
 				$this->db->query('UPDATE `profile_data` SET `spouse_id`="'.$last_id->id.'" WHERE id='.$last_id->spouse_id);
 			break;
 		}
-		if(!isset($value->upload)){$value->upload=0;}
-		if(!isset($value->upload)) { // If UPLOAD ( save_photo() ) return success
-
+		
+		if($value->crop) { // If UPLOAD ( save_photo() ) return success
 			rename(BASEPATH."../..".$value->photo_url, BASEPATH."../../assets/images/uploaded/avatars/".$last_id->id.".".$photo['extension']);
 			$value->photo_url = "../assets/images/uploaded/avatars/".$last_id->id.".".$photo['extension'];
 			$this->db->query('UPDATE `profile_data`
@@ -399,16 +414,42 @@ class Api extends CI_Controller {
 			$image = $this->image_model;
 			$image->source_file = BASEPATH."../".$value->photo_url;
 			$image->returnType = 'array';
-			$value->x1 = (-1)*ceil($value->x1);	
+			/*$value->x1 = (-1)*ceil($value->x1);	
 	  		$value->y1 = (-1)*ceil($value->y1);
 			$width = 300;
 			$height = 300;
-			$img = $image->crop($width, $height, $value->x1, $value->y1);
+			$img = $image->crop($width, $height, $value->x1, $value->y1);*/
+
+			$value->x1 = floor($value->x1);	
+	  		$value->y1 = floor($value->y1);
+			$value->x2 = floor($value->x2);	
+	  		$value->y2 = floor($value->y2);
+			$img = $image->crop_img(BASEPATH."../".$value->photo_url, $value->w, $value->h, $value->x1, $value->y1, $value->x2, $value->y2, $value->id);
 
 			$crop->action = "crop_photo";
 	    	$crop->status = "1";
 	    	$crop->response = $img['image'];
 	    	$json->crop = $crop;
+		}
+		else
+		{
+			$image = $this->image_model;
+			$image->source_file = "../".$value->photo_url;
+			$sImage = (($image->source_file!='')&&(file_exists($image->source_file))) ? $image->source_file : $image->doDie($image->errors['no-image']);
+			$srcPath = (strstr($sImage,'/')) ? substr($sImage,0,strrpos($sImage,'/')+1) : '';
+			$srcName = str_replace($srcPath,'',$sImage);
+			$temp_srcName = $srcName;
+			$srcName = $last_id->id.'.'.strtolower(end(explode(".", $srcName)));
+			if($value->upload)
+			{
+				rename($image->uploadTo.$temp_srcName, $image->uploadTo.$srcName);
+				copy($image->uploadTo.$srcName, $image->newPath.'/'.$srcName);
+				$this->db->query('UPDATE `profile_data`
+								SET `photo_url`= "'.$last_id->id.".".strtolower(end(explode(".", $srcName))).'"
+						    	WHERE `id`="'.$last_id->id.'" AND
+							       	  `user_id`="'.$this->session->userdata('user_id').'"
+					    	');
+			}
 		}
 		$json->addnode = $last_id;
 	    $json->action = "add_node";
@@ -433,10 +474,15 @@ class Api extends CI_Controller {
 		$image->returnType = 'array';
 		$image->newName = ($value->user_id) ? $value->user_id : $this->session->userdata('user_id')."_temp";
 		$img = $image->upload($_FILES['Filedata']);
-
-		$json->action = "save_photo";
-	    $json->status = "1";
-	    $json->response = $img['image']; 
+		
+		if(!isset($img['error']))
+		{
+			$json->action = "save_photo";
+			$json->status = "1";
+			$json->response = $img['image'];
+		}
+		else $json->status = "0";
+		
 	    echo json_encode($json);
 	}
 

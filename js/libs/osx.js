@@ -55,6 +55,8 @@ var OSX = {
 					function () {
 						$("div.close-edit", self.container).show();
 						$("#osx-modal-data-edit", self.container).show();
+						$('#cropped').val('');
+						$('#uploaded').val('');
 						if(data.action == 'edit_person')
 						{
 							$('#user_id').val(user_data.info.user_id);
@@ -67,6 +69,16 @@ var OSX = {
 							$('#b_date').val(user_data.info.b_date);
 							$('#d_date').val(user_data.info.d_date);
 							$('#about').html(user_data.info.comment);
+							if(user_data.info.photo_url != 'no_avatar.jpg')
+							{
+								$('#photo_preview').attr('src', 'assets/images/uploaded/avatars/thumbs/'+user_data.info.photo_url);
+								$('#photo_preview').css('max-width', '100px');
+								$('#photo_preview').css('max-height', '100px');
+							}
+							else
+							{
+								$('#photo_preview').css('display','none');
+							}
 
 							if(user_data.info.sex == 'm')
 							{
@@ -116,8 +128,10 @@ var OSX = {
 							function(response)
 							{
 								resp = JSON.parse(response);
-								if(resp.status)
+								if(resp.status == "1")
 								{
+									$('#photo_preview').css('display','none');
+									$('#uploaded').val('1');
 									$('#photo').attr('src','/assets/images/uploaded/avatars/'+resp.response);
 									$('#photo_native_size').attr('src','/assets/images/uploaded/avatars/'+resp.response);
 									$('#text_image').attr('style','display: block');
@@ -212,15 +226,20 @@ function preview(img, selection) {
 		marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
 		marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
 	});
+	$('#photo_preview').css('display','block');
+	$('#photo_preview').attr('src', $('#photo').attr('src'));
+	$('#photo_preview').css('max-width', '');
+	$('#photo_preview').css('max-height', '');
 }
 
 function initImgCrop(imgName){
-	$('#photo_preview').attr('src', imgName);
+	
 	$('#photo').imgAreaSelect({
 		aspectRatio: '1:1',
 		handles: true,
 		onSelectChange: preview,
 		onSelectEnd: function ( image, selection ) {
+			$('#cropped').val('1');
 			$('input[name=x1]').val(selection.x1);
 			$('input[name=y1]').val(selection.y1);
 			$('input[name=x2]').val(selection.x2);
