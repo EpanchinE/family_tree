@@ -111,6 +111,11 @@ a:visited {	text-decoration: none; color: #303030; }
 		color-stop(1, rgb(97,124,131))
 		);
 	margin: 0;
+	-moz-user-select: -moz-none;
+	-o-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
 }
 #loginform {
 	display: none;
