@@ -17,6 +17,8 @@ var OSX = {
 			onOpen: OSX.open_edit,
 			onClose: OSX.close
 		});
+        $("#b_date").datepicker({ changeYear: true, yearRange: '1900:2050', createButton:false, clickInput:true });
+        $("#d_date").datepicker({ changeYear: true, yearRange: '1900:2050', createButton:false, clickInput:true });
 	},
 	open_edit: function (d) {
 		//edit or add new person
