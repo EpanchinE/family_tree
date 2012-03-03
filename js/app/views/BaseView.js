@@ -87,16 +87,16 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			this.renderer = new THREE.CanvasRenderer();
 			this.renderer.setSize(window.innerWidth, window.innerHeight);
 			this.container.appendChild(this.renderer.domElement);
-            var t = setTimeout("$('#navigator').animate({left:'-=110px'});",2000);
+            var t = setTimeout("$('#navigator').animate({left:'-=105px'});",2000);
 		},
         
         navShow: function(){
-            if (!this.showedNav)$('#navigator').animate({left:'+=110px'});
+            if (!this.showedNav)$('#navigator').animate({left:'+=105px'});
             this.showedNav = true;
         },
         
         navHide: function(){
-            if (this.showedNav)$('#navigator').animate({left:'-=110px'});
+            if (this.showedNav)$('#navigator').animate({left:'-=105px'});
             this.showedNav = false;
         },
         
