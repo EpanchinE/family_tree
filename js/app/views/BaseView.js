@@ -28,7 +28,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			"click #submit_person": "submitFunc",
 			"click #logout_btn" : "logout",
 			"click #revers" : "reverseTree",
-            "mousemove #navigator" : "navShow",
+            "mousemove #roll" : "navShow",
             "mouseout #navigator" : "navHide"
 		},
 		
@@ -73,8 +73,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 				},this)
 			});
 			//$('#navigator').on('mousemove', function(){$('#navigator').css('opacity', '0.8');});
-			//$('#navigator').on('mouseout', function(){$('#navigator').css('opacity', '0.5');});\
-            
+			//$('#navigator').on('mouseout', function(){$('#navigator').css('opacity', '0.5');});\            
 				
 			this.container = document.createElement('div');
 			$(this.el).append(this.container);
@@ -92,11 +91,13 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 		},
         
         navShow: function(){
-            $('#navigator').css('opacity', '0.8');
+            if (!this.showedNav)$('#navigator').animate({left:'+=120px'});
+            this.showedNav = true;
         },
         
         navHide: function(){
-            $('#navigator').css('opacity', '0.5');
+            $('#navigator').animate({left:'-=120px'});
+            this.showedNav = false;
         },
         
 		reverseTree: function (){
@@ -110,7 +111,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			var node = new THREE.Object3D();
 			// TODO coords
 			if(data.photo_url == "" || data.photo_url == null){data.photo_url = "no_avatar.jpg"};
-			var photo = this.texture('assets/images/uploaded/avatars/thumbs/'+data.photo_url, 260, 260);
+			var photo = this.texture('assets/images/uploaded/avatars/'+data.photo_url, 260, 260);
 			photo.position.set(0, 40, 4);
 			
 			var elems = {
@@ -923,23 +924,13 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			var h = $('#dp').height();
 			var w = $('#dp').width();
 			var scale = 1;
-			var crop = 0;
-			var upload = 0;
-			if(h > $('#photo').height() || w > $('#photo').width()) {
-				scale = h / $('#photo').height();
+			if(h > 300 || w > 300) {
+				scale = h / 300;
 			}
 			if(w > h) {
-				scale = w / $('#photo').width();
+				scale = w / 300;
 			}
-			if ($('#cropped').val() == '1')
-			{
-				crop = 1;
-			}
-			if ($('#uploaded').val() == '1')
-			{
-				upload = 1;
-			}
-			
+
 			console.log(this.TempObj);
 			var data = {
 				'id': $('#user_id').val(),
@@ -959,9 +950,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 				'spouse_id' : $('#spouse_id').val(),
 				'sex' : $('input:radio[name="gender"]:checked').val(),
 				'photo_url' : $('#photo').attr('src'),
-				'comment' : $('#about').val(),
-				'crop' : crop,
-				'upload' : upload
+				'comment' : $('#about').val()
 				
 			};
 			this.TempObj.node.info.id = this.TempObj.node.info.user_id;
@@ -1053,7 +1042,6 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 				dataType : 'json',
 				data : options.data,
 				success : $.proxy(function(response) {
-					this.redrawTree();
 				}, this),
 				error : function(error) {
 					console.log(error.responseText);

@@ -28,7 +28,7 @@
 	</head>
 	<body class="body">
 		<div id="home">
-			<div id="navigator" style="position:absolute; z-index: 100;">
+			<div id="navigator" style="position:absolute; z-index: 100; left: -120px;">
 				<input type="button" id="logout_btn" value="Logout" />
 
 				<div id="zoom_text">Zoom</div>
@@ -50,6 +50,7 @@
                 <div id="revers" style="border: solid 1px gainsboro;"><div id="zoom_text">Reverse</div></div>
 				<!--div id="minus" class="circle"></div-->
 			</div>
+            <div id="roll" style="position: absolute; height: 99%; width: 4%; visibility: inherit;"></div>
 			<div id="hint"></div>
 			<div id="osx-modal-content-edit">
 				<div id="osx-modal-title-edit">
@@ -62,9 +63,9 @@
 					<table id="data_table">
 						<tr>
 							<td id="photo_form">
-								<div id="photo_upload" style="height: 80px;">
+								<div id="photo_upload">
 									<input type="button" id="upload_input" value="Upload photo">
-									<div>*.jpg, *.jpeg, *.png, *.gif (max file size 2 Mb)</div>
+									(*.jpg, *.jpeg, *.png, *.gif)
 								</div>
 								<div id="photo_crop">
 									<div id="text_image">
@@ -83,8 +84,6 @@
 									<input type="hidden" id="y2" name="y2" value="" />
 									<input type="hidden" id="w" name="w" value="" />
 									<input type="hidden" id="h" name="h" value="" />
-									<input type="hidden" id="cropped" name="cropped" value="" />
-									<input type="hidden" id="uploaded" name="uploaded" value="" />
 								</div>
 							</td>
 							<td>
