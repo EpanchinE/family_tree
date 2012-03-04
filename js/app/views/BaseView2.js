@@ -7,7 +7,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
         reverse : 1,
 		stepY : 300,
 		lineTurne : 375,
-        renderer : null,
+        renderer : new THREE.WebGLRenderer({antialias: true}),
 		
 		isMouseDown : false,
 		onMouseDownPosition: null,
@@ -37,7 +37,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 		
 		initialize: function(){
             
-            this.renderer = new THREE.WebGLRenderer({antialias: true});
+            //this.renderer = new THREE.WebGLRenderer({antialias: true});
             this.renderer.setSize(document.body.clientWidth, document.body.clientHeight);
             document.body.appendChild(this.renderer.domElement);
             this.renderer.setClearColorHex(0xEEEEEE, 1.0);
@@ -84,11 +84,11 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
             this.camera.position.z = Math.sin(this.rotation)*150;
             this.scene.add(this.camera);
             this.renderer.autoClear = false;
-            this.animate(new Date().getTime());
             this.qwe = new Date().getTime();
-              onmessage = function(ev) {
-                paused = (ev.data == 'pause');
-              }
+            this.animate(this.qwe);
+            this.onmessage = function(ev) {
+                this.paused = (ev.data == 'pause');
+            }
 		},
         createCube : function(x,y,z) {
             var cube = new THREE.Mesh(
@@ -163,13 +163,12 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
       },
       
       v : function (x,y,z){
-        return new THREE.Vertex(new THREE.Vector3(x,y,z)); 
+            return new THREE.Vertex(new THREE.Vector3(x,y,z)); 
       },
       
       render: function(){
 			this.renderer.render(this.scene, this.camera);
-			
-		},
+      },
       
       ////////////////////////////////////////////////////////////////////////////////////////
       paused : false,
@@ -181,37 +180,37 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
       onmousedown : function (ev){
         if (ev.target == renderer.domElement) {
           this.down = true;
-          sx = ev.clientX;
-          sy = ev.clientY;
+          this.sx = ev.clientX;
+          this.sy = ev.clientY;
         }
       },
       onmouseup : function(){ this.down = false; },
       onmousemove : function(ev) {
         if (this.down) {
-          var dx = ev.clientX - sx;
-          var dy = ev.clientY - sy;
+          var dx = ev.clientX - this.sx;
+          var dy = ev.clientY - this.sy;
           this.rotation += dx/100;
           this.camera.position.x -= Math.cos(this.rotation)*150;
           this.camera.position.y += Math.sin(this.rotation)*150;
-          sx += dx;
-          sy += dy;
+          this.sx += dx;
+          this.sy += dy;
         }
       },
       onmousewheel : function(ev){
-        camera.position.z -= event.originalEvent.wheelDeltaY;
+        this.camera.position.z -= event.originalEvent.wheelDeltaY;
       },
       
       
       animate : function (t) {
+        requestAnimationFrame($.proxy(this.animate, this));
         if (!this.paused) {
           this.last = t;
           var gl = this.renderer.getContext();
-          this.renderer.clear();
+          //this.renderer.clear();
           this.camera.lookAt( this.scene.position );
           this.renderer.render(this.scene, this.camera);
           this.renderer.render(this.coordScene, this.camera);
         }
-        requestAnimationFrame(this.animate, this.renderer.domElement);
       }
       
       
