@@ -37,11 +37,14 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 		
 		initialize: function(){
             
+            this.container = document.createElement('div');
+			$(this.el).append(this.container);
             //this.renderer = new THREE.WebGLRenderer({antialias: true});
             this.renderer.setSize(document.body.clientWidth, document.body.clientHeight);
             document.body.appendChild(this.renderer.domElement);
             this.renderer.setClearColorHex(0xEEEEEE, 1.0);
             this.renderer.clear();
+            this.container.appendChild(this.renderer.domElement);
             
             var width = this.renderer.domElement.width;
             var height = this.renderer.domElement.height;
@@ -178,29 +181,27 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
       sy : 0,
       rotation : 1,
       onmousedown : function (ev){
-        if (ev.target == renderer.domElement) {
+        if (ev.target == this.renderer.domElement) {
           this.down = true;
-          this.sx = ev.clientX;
-          this.sy = ev.clientY;
+          this.sx = (ev.clientX / window.innerWidth) * 2 - 1;
+          this.sy = -(ev.clientY / window.innerHeight) * 2 + 1;
         }
       },
       onmouseup : function(){ this.down = false; },
       onmousemove : function(ev) {
         if (this.down) {
-          var dx = ev.clientX - this.sx;
-          var dy = ev.clientY - this.sy;
-          this.rotation += dx/100;
+          this.dx = (ev.clientX / window.innerWidth) * 2 - 1 - this.sx;
+          this.dy = -(ev.clientY / window.innerHeight) * 2 + 1 - this.sy;
+          this.rotation += this.dx/100;
           this.camera.position.x -= Math.cos(this.rotation)*150;
           this.camera.position.y += Math.sin(this.rotation)*150;
-          this.sx += dx;
-          this.sy += dy;
+          //this.sx = this.dx;
+          //this.sy = this.dy;
         }
       },
       onmousewheel : function(ev){
-        this.camera.position.z -= event.originalEvent.wheelDeltaY;
+        //this.camera.position.z -= event.originalEvent.wheelDeltaY;
       },
-      
-      
       animate : function (t) {
         requestAnimationFrame($.proxy(this.animate, this));
         if (!this.paused) {
