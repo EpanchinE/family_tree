@@ -87,20 +87,24 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			this.renderer = new THREE.CanvasRenderer();
 			this.renderer.setSize(window.innerWidth, window.innerHeight);
 			this.container.appendChild(this.renderer.domElement);
-            var t = setTimeout("$('#navigator').animate({left:'-=105px'},function(){$('#navigator').css('background-color', '#1A3457');});",2000);
+            this.navWidth = $('#navigator').css("width");
+            this.navWidth = this.navWidth.slice(0,-2);
+            this.navWidth = this.navWidth*1;
+            this.navWidth += 5;
+            var t = setTimeout("$('#navigator').animate({left:'-="+this.navWidth+"px'},function(){$('#navigator').css('background-color', '#1A3457');});",2000);
 		},
         
         navShow: function(){
             if (!this.showedNav){
                 $('#navigator').css("background-color", "#617c83");
-                $('#navigator').animate({left:'+=105px'});
+                $('#navigator').animate({left:'+='+this.navWidth+'px'});
             }
             this.showedNav = true;
         },
         
         navHide: function(){
             if (this.showedNav) {
-                $('#navigator').animate({left:'-=105px'},function(){$('#navigator').css("background-color", "#1A3457");});
+                $('#navigator').animate({left:'-='+this.navWidth+'px'},function(){$('#navigator').css("background-color", "#1A3457");});
             }
             this.showedNav = false;
         },
