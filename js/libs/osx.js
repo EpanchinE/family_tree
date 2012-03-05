@@ -81,7 +81,7 @@ var OSX = {
 							{
 								$('#photo_preview').css('display','none');
 							}
-
+							
 							if(user_data.info.sex == 'm')
 							{
 								$('#m_radio').attr('checked', true);
@@ -90,7 +90,11 @@ var OSX = {
 							{
 								$('#f_radio').attr('checked', true);
 							}
-
+							if(user_data.info.spouse_id != '')
+							{
+								$('#user_info_div input:radio').attr('disabled',true);
+							}
+							
 							if(user_data.info.photo_url != '')
 							{
 								$('#photo').attr('src','assets/images/uploaded/avatars/'+user_data.info.photo_url);
@@ -108,11 +112,27 @@ var OSX = {
 						}
 						else
 						{
-							$('#m_radio').attr('checked', true);
 							$('#text_image').attr('style','display: none');
 							$('#data_table').attr('style','height: 495px;');
 							$('#photo').attr('src','assets/images/uploaded/avatars/no_avatar.jpg');
 							$('#photo_native_size').attr('src','assets/images/uploaded/avatars/no_avatar.jpg');
+							if(data.action == 'add_spouse')
+							{
+								switch (user_data.info.sex)
+								{
+									case "m":
+										$('#f_radio').attr('checked', true);
+										break;
+									case "f":
+										$('#m_radio').attr('checked', true);
+										break;
+								}
+								$('#user_info_div input:radio').attr('disabled',true);
+							}
+							else
+							{
+								$('#m_radio').attr('checked', true);
+							}
 						}
 						upclick({
 							element: upload_input,
