@@ -110,8 +110,7 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
         },
         
 		reverseTree: function (){
-            if (this.reverse == 1) {this.reverse = -1;}
-            else if (this.reverse == (-1)) this.reverse = 1; 
+            this.reverse = this.reverse*(-1); 
             this.redrawTree(this.data2.id);
         },
         
@@ -124,16 +123,16 @@ define(['models/TreeNodeModel', 'collections/TreeCollection', 'models/TreeNodeMo
 			
 			var elems = {
                 'child': {
-                    width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/add.png', trPath: 'trash/add_tr.png', posX: this.mouseX, posY: this.mouseY + Math.floor(this.nodeHeight / 2) - 30, posZ: 10
+                    width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/add.png', trPath: 'trash/add_tr.png', posX: this.mouseX, posY: this.mouseY + (this.reverse)*(Math.floor(this.nodeHeight / 2) - 20), posZ: 10
                 },
                 'edit': {
-                    width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/edit.png', trPath: 'trash/edit_tr.png', posX: this.mouseX+this.nodeWidth/4, posY: this.mouseY + Math.floor(this.nodeHeight / 2) - 30, posZ: 10
+                    width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/edit.png', trPath: 'trash/edit_tr.png', posX: this.mouseX+this.nodeWidth/4, posY: this.mouseY + Math.floor(this.nodeHeight / 2) - 20, posZ: 10
                 },
                 'delete': {
-                    width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/delete.png', trPath: 'trash/delete_tr.png', posX: this.mouseX-this.nodeWidth/4, posY: this.mouseY + Math.floor(this.nodeHeight / 2) - 30, posZ: 10
+                    width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/delete.png', trPath: 'trash/delete_tr.png', posX: this.mouseX-this.nodeWidth/4, posY: this.mouseY + Math.floor(this.nodeHeight / 2) - 20, posZ: 10
                 }
             };
-            if (!data.f_id || !data.m_id) elems.parent = {width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/add.png', trPath: 'trash/add_tr.png', posX: this.mouseX, posY: this.mouseY - Math.floor(this.nodeHeight / 2) + 50, posZ: 10};
+            if (!data.f_id || !data.m_id) elems.parent = {width: this.imgPlusSize, height: this.imgPlusSize, path: 'trash/add.png', trPath: 'trash/add_tr.png', posX: this.mouseX, posY: this.mouseY - (this.reverse)*(Math.floor(this.nodeHeight / 2) - 20), posZ: 10};
             if (!data.spouse_id){
                 if(data.sex == "m") var dx = Math.floor(this.nodeWidth / 2)-40;
                 if(data.sex == "f") var dx = -Math.floor(this.nodeWidth / 2)+40;
