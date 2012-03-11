@@ -34,6 +34,7 @@ define(['collections/TreeCollection', 'models/login_model'], function(TreeCollec
 			"click canvas" : "onclick",
 			"mousemove #roll" : "navShow",
 			"click #logout_btn" : "logout",
+			//"click #view3d" : "changeView",
 			"click #submit_person" : "submitFunc"
 		},
 
@@ -46,7 +47,7 @@ define(['collections/TreeCollection', 'models/login_model'], function(TreeCollec
 			this.collection = new TreeCollection();
 			this.model.bind("change:send_status", $.proxy(this.redrawTree, this));
 			this.loginModel = new LoginModel();
-
+$("#view3d").on("click", $.proxy(this.changeView, this));
 			//navigation
 			$("#slider").slider({
 				orientation : "vertical",
@@ -850,6 +851,14 @@ define(['collections/TreeCollection', 'models/login_model'], function(TreeCollec
 		},
 		logout : function() {
 			this.loginModel.logout();
+		},
+		changeView : function() {
+			console.log("click view 3d");
+			this.unbind();
+			//this.remove();
+			$("#view3d").off();
+			//Backbone.history.navigate('tree', true);
+			window.location.href = '/#tree' ;
 		},
 		submitFunc : function(event) {
 			event.preventDefault();

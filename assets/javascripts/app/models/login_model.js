@@ -83,7 +83,7 @@ define(function () {
 		successCheckLogin: function(resp){
 			var answ = JSON.parse(resp);
 			if(answ.status == "1") {
-				Backbone.history.navigate('tree', true);	
+				//Backbone.history.navigate('tree', true);	
 			}
 			if(answ.status == "0") {
 				if(localStorage.getItem("autologin")){

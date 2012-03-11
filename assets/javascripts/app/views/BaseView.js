@@ -40,16 +40,18 @@ define(['collections/TreeCollection', 'models/login_model'], function(TreeCollec
 			"click #logout_btn" : "logout",
 			"click #revers" : "reverseTree",
 			"click #save_image" : "saveImage",
+			//"click #view3d" : "changeView",
 			"mousemove #roll" : "navShow"
 		},
 
-		initialize : function() {
+		initialize : function() {console.log(this.events);
 			this.data2.id = localStorage.getItem("prof_id");
 			$.ajaxSetup({
 				cache : false
 			});
 			this.collection = new TreeCollection();
 			this.model.bind("change:send_status", $.proxy(this.redrawTree, this));
+			$("#view3d").on("click", $.proxy(this.changeView, this));
 			this.loginModel = new LoginModel();
 			//navigation
 			$("#slider").slider({
@@ -1093,6 +1095,14 @@ define(['collections/TreeCollection', 'models/login_model'], function(TreeCollec
 		},
 		logout : function() {
 			this.loginModel.logout();
+		},
+		changeView : function() {
+			console.log("click view");
+			console.log(this);
+			this.unbind();
+			//this.remove();
+			$("#view3d").off("click");
+			Backbone.history.navigate('tree3d', true);
 		},
 		submitFunc : function(event) {
 			event.preventDefault();
