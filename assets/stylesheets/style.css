@@ -377,6 +377,9 @@ p a {
 #save_image {
 	top: 220px;
 }
+#view3d {
+	top: 260px;
+}
 #zoom_text, #save_img {
 	padding-top: 10px;
 	width: 100%;
