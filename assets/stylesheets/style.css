@@ -362,12 +362,12 @@ p a {
 		);
 
 }
-#logout_btn:hover, #revers:hover, #save_image:hover {
+#logout_btn:hover, #revers:hover, #save_image:hover, #view3d:hover {
     text-decoration: none;
 	opacity: 1;
 	/*margin-top: 1px;*/
 }
-#logout_btn:active, #revers:active, #save_image:active {
+#logout_btn:active, #revers:active, #save_image:active, #view3d:active {
     position: relative;
     /*top: 1px;*/
 }
