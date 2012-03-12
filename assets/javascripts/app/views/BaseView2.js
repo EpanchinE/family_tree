@@ -47,7 +47,8 @@ define(['collections/TreeCollection', 'models/login_model'], function(TreeCollec
 			this.collection = new TreeCollection();
 			this.model.bind("change:send_status", $.proxy(this.redrawTree, this));
 			this.loginModel = new LoginModel();
-$("#view3d").on("click", $.proxy(this.changeView, this));
+			$("#view3d").on("click", $.proxy(this.changeView, this));
+			$("#view3d").attr('value','2D View');
 			//navigation
 			$("#slider").slider({
 				orientation : "vertical",
@@ -853,7 +854,6 @@ $("#view3d").on("click", $.proxy(this.changeView, this));
 			this.loginModel.logout();
 		},
 		changeView : function() {
-			console.log("click view 3d");
 			this.unbind();
 			//this.remove();
 			$("#view3d").off();
